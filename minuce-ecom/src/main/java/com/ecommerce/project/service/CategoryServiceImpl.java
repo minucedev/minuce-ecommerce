@@ -11,6 +11,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     private List<Category> categories = new ArrayList<>();
 
+    private Long nextId = 1L;
+
     @Override
     public List<Category> getAllCategories() {
         return categories;
@@ -18,6 +20,17 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void createCategory(Category category) {
+        category.setCategoryID(nextId++);
         categories.add(category);
+    }
+
+    @Override
+    public String deleteCategory(Long categoryId) {
+        Category category = categories.stream()
+        .filter(c -> c.getCategoryID().equals(categoryId))
+                .findFirst().get();
+        categories.remove(category);
+//        if(category == null) return "Not found category";
+        return "Remove success categoryId " + categoryId;
     }
 }
