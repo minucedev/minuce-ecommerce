@@ -30,8 +30,8 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-//    @GetMapping("/api/public/categories")
-    @RequestMapping(value = "/public/categories" , method = RequestMethod.GET)
+    @GetMapping("/api/public/categories")
+//    @RequestMapping(value = "/public/categories" , method = RequestMethod.GET)
     public ResponseEntity<List<Category>> getAllCategories() {
         List<Category> categories = categoryService.getAllCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
