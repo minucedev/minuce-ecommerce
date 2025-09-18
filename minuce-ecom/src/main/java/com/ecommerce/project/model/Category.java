@@ -4,27 +4,19 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Entity(name = "categories")
+@Data // tạo get,set,toString,...
+@NoArgsConstructor // tạo constructor không có đối số
+@AllArgsConstructor // tạo constructor có tất cả đối số
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto increase Id
     private Long categoryID;
     private String categoryName;
 
-    public Long getCategoryID() {
-        return categoryID;
-    }
-
-    public void setCategoryID(Long categoryID) {
-        this.categoryID = categoryID;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
 }
