@@ -5,15 +5,12 @@ import com.ecommerce.project.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
 
 //    private List<Category> categories = new ArrayList<>();
 
@@ -35,29 +32,22 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public String deleteCategory(Long categoryId) {
-        List<Category> categories = categoryRepository.findAll();
-        Category category = categories.stream()
-        .filter(c -> c.getCategoryID().equals(categoryId))
-                .findFirst()
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resources not found"));
-        categoryRepository.delete(category);
-        return "Remove success categoryId " + categoryId;
+
+        Category deletedCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+
+        categoryRepository.delete(deletedCategory);
+        return "delete success " + categoryId;
     }
 
     @Override
     public Category updateCategory(Category category, Long categoryId) {
-        List<Category> categories = categoryRepository.findAll();
 
-        Optional<Category> optionalCategory = categories.stream()
-                .filter(c -> c.getCategoryID().equals(categoryId))
-                .findFirst();
-        if(optionalCategory.isPresent()){
-            Category existingCategory = optionalCategory.get();
-            existingCategory.setCategoryName(category.getCategoryName());
-            Category savedCategory = categoryRepository.save(existingCategory);
-            return  savedCategory;
-        }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found");
-        }
+        Category savedCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
+
+        category.setCategoryID(categoryId); // Gán lại ID để trùng với ID trong database, tránh việc ID không trùng
+        savedCategory = categoryRepository.save(category);
+        return savedCategory;
     }
 }
