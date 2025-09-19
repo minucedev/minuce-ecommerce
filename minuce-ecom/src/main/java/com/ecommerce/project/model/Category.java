@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Data // tạo get,set,toString,...
 @NoArgsConstructor // tạo constructor không có đối số
 @AllArgsConstructor // tạo constructor có tất cả đối số
+
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto increase Id
