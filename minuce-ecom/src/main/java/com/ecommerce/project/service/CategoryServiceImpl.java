@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -57,13 +56,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category updateCategory(Category category, Long categoryId) {
+    public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId) {
 
         Category savedCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Resource not found"));
 
+        Category category = modelMapper.map(categoryDTO, Category.class);
+
         category.setCategoryID(categoryId); // Gán lại ID để trùng với ID trong database, tránh việc ID không trùng
+
         savedCategory = categoryRepository.save(category);
-        return savedCategory;
+
+
+        return modelMapper.map(savedCategory, CategoryDTO.class);
     }
 }
